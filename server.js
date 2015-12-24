@@ -7,12 +7,12 @@ var server = require('http').createServer()
   , port = 4080;
 
 app.use(express.static(__dirname + '/public/'));
+   
+
 
 app.get('/client',function(req,res){
   res.sendFile(__dirname+'/public/index.html');
-  //__dirname : It will resolve to your project folder.
 });
-
 
 app.use(function (req, res) {
   res.send({ msg: "Server Initiated" });
@@ -27,9 +27,7 @@ wss.broadcast = function broadcast(data) {
 
 wss.on('connection', function connection(ws) {
   var location = url.parse(ws.upgradeReq.url, true);
-  console.log(location);
-  // you might use location.query.access_token to authenticate or share sessions
-  // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
+  
 
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
