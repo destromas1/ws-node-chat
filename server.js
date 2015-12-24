@@ -7,6 +7,10 @@ var server = require('http').createServer()
   , port = 4080;
 
 
+app.get('/client',function(req,res){
+  res.sendFile(__dirname+'/public/index.html');
+  //__dirname : It will resolve to your project folder.
+});
 
 
 app.use(function (req, res) {
@@ -31,7 +35,7 @@ wss.on('connection', function connection(ws) {
     wss.broadcast(message);
   });
 
-  ws.send('something');
+  ws.send('Data Came from Server');
 });
 
 server.on('request', app);
