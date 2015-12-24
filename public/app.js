@@ -1,8 +1,16 @@
 jQuery(document).ready(function ($) {
 	var content = $('#content');
+    
+    var WS_SERVER = 'ws://localhost:4080';
+    
+    var url = window.location.href;
+        if (url.indexOf("localhost") < 0) {
+        WS_SERVER = 'wss://glacial-wildwood-7266.herokuapp.com';
+    }
+    
 
 	//var ws = new WebSocket('ws://localhost:4080');
-    var ws = new WebSocket('wss://glacial-wildwood-7266.herokuapp.com');
+    var ws = new WebSocket(WS_SERVER);
     
     
 
