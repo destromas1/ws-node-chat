@@ -1,0 +1,19 @@
+{
+  "name": "ws-node-chat",
+  "version": "0.0.1",
+  "description": "A sample Node.js Chat app with WS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^0.8.1"
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/destromas1/ws-node-chat"
+  }
+}
