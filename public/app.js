@@ -1,7 +1,10 @@
 jQuery(document).ready(function ($) {
 	var content = $('#content');
 
-	var ws = new WebSocket('ws://localhost:4080');
+	//var ws = new WebSocket('ws://localhost:4080');
+    var ws = new WebSocket('ws://glacial-wildwood-7266.herokuapp.com');
+    
+    
 
 	ws.onopen = function () {
 		console.log('Connected');
