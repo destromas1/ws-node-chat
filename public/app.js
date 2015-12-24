@@ -8,23 +8,15 @@ jQuery(document).ready(function ($) {
         WS_SERVER = 'wss://glacial-wildwood-7266.herokuapp.com';
     }
     
-
-	//var ws = new WebSocket('ws://localhost:4080');
-    var ws = new WebSocket(WS_SERVER);
-    
-    
+    var ws = new WebSocket(WS_SERVER);  
 
 	ws.onopen = function () {
 		console.log('Connected');
 	};
 
-	$('#btnChat').click(function () {
-		console.log("9999999999999");
-
+	$('#btnChat').click(function () {               
 		var message = $('#input').val();
-
 		console.log(message);
-
 		ws.send(message);
 	});
 
