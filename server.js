@@ -6,6 +6,7 @@ var server = require('http').createServer()
   , app = express()
   , port = 4080;
 
+app.use(express.static(__dirname + '/public/'));
 
 app.get('/client',function(req,res){
   res.sendFile(__dirname+'/public/index.html');
