@@ -6,9 +6,10 @@ var server = require('http').createServer()
   , app = express()
   , port = 4080;
 
-app.use(express.static(__dirname + '/public/'));
-   
 
+app.set('port', (process.env.PORT || port));
+
+app.use(express.static(__dirname + '/public/'));
 
 app.get('/client',function(req,res){
   res.sendFile(__dirname+'/public/index.html');
@@ -38,7 +39,7 @@ wss.on('connection', function connection(ws) {
 });
 
 server.on('request', app);
-server.listen(port, function () { console.log('Listening on ' + server.address().port) });
+server.listen(app.get('port'), function () { console.log('Listening on ' + server.address().port) });
 
 
 
