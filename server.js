@@ -7,6 +7,15 @@ var server = require('http').createServer()
   , port = 4080;
 
 
+// app.use(function (req, res) {
+// 
+// if (req.headers['x-forwarded-proto'] !== 'https'){
+//         res.redirect(['https://', req.get('host'), req.url].join(''));        
+//     }else{
+//         return next();
+//     }
+// });
+
 app.set('port', (process.env.PORT || port));
 
 app.use(express.static(__dirname + '/public/'));
