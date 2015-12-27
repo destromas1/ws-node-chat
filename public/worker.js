@@ -28,7 +28,7 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-    console.log("Caught a fetch!");
+    console.log("Caught a fetch!!!");
     
     
     //var requestURL = new URL(event.request.url);
