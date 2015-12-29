@@ -22,6 +22,15 @@ var isPushEnabled = false;
         isPushEnabled = true;  
         pushButton.textContent = 'Disable Push Messages';  
         pushButton.disabled = false;
+        
+        
+        
+        // Update status to subscribe current user on server, and to let
+        // other users know this user has subscribed
+        var endpoint = subscription.endpoint;
+        var key = subscription.getKey('p256dh');
+        //updateStatus(endpoint,key,'subscribe');
+        
 
         // TODO: Send the subscription.endpoint to your server  
         // and save it to send a push message at a later date
@@ -131,6 +140,16 @@ function initialiseState() {
           // to allow the user to enable push  
           return;  
         }
+        
+        
+        // initialize status, which includes setting UI elements for subscribed status
+        // and updating Subscribers list via push
+        console.log(subscription.toJSON());
+        var endpoint = subscription.endpoint;
+        var key = subscription.getKey('p256dh');
+        console.log(key);
+        //updateStatus(endpoint,key,'init')
+        
 
         // Keep your server in sync with the latest subscriptionId
         //sendSubscriptionToServer(subscription);
