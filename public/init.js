@@ -9,7 +9,7 @@
 
 var isPushEnabled = false;
 
- function subscribe() {  
+ function subscribe() {
   // Disable the button so it can't be changed while  
   // we process the permission request  
   var pushButton = document.querySelector('.js-push-button');  
@@ -31,6 +31,7 @@ var isPushEnabled = false;
         var key = subscription.getKey('p256dh');
         //updateStatus(endpoint,key,'subscribe');
         
+        sendWebPush(subscription);
 
         // TODO: Send the subscription.endpoint to your server  
         // and save it to send a push message at a later date
@@ -55,6 +56,35 @@ var isPushEnabled = false;
       });  
   });  
 }
+
+var PUSH_SERVER_URL = '';
+
+function sendWebPush(subscription){
+    var headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+
+      fetch(PUSH_SERVER_URL + '/send_web_push', {
+        method: 'post',
+        headers: headers,
+        body: JSON.stringify(subscription)
+      }).then(function(response) {
+        return response.json();
+      })
+      .then((responseObj) => {
+        if (!responseObj.success) {
+          throw new Error('Unsuccessful attempt to send push message');
+        }
+      })
+      .catch(function(err) {
+        console.log('Fetch Error :-S', err);
+      });
+}
+
+
+
+
+
+
 
 
 function unsubscribe() {  

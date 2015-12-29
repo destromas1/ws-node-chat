@@ -38,9 +38,9 @@ app.get('/client',function(req,res){
   res.sendFile(__dirname+'/public/index.html');
 });
 
-app.use(function (req, res) {
-  res.send({ msg: "Server Initiated" });
-});
+// app.use(function (req, res) {
+//   res.send({ msg: "Server Initiated" });
+// });
 
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
@@ -169,6 +169,10 @@ function sendPushMessage(endpoint, keys) {
 
 
 app.post('/send_web_push', function(req, res) {
+    
+    console.log('send_web_push');
+    
+    
   var endpoint = req.body.endpoint;
   var keys = req.body.keys;
   if (!endpoint) {
