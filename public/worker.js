@@ -29,18 +29,7 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
     console.log("Caught a fetch!!!");
-    
-    
-    //var requestURL = new URL(event.request.url);
-    
-    //console.log(requestURL);
-
-    // if (requestURL.hostname == 'api.flickr.com') {
-    //     event.respondWith(flickrAPIResponse(event.request));
-    // }
-    
-    
-    
+        
     //event.respondWith(new Response("Hello world!"));
     event.respondWith(caches.match(event.request).then(function(response) {
          return response || fetch(event.request);

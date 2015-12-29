@@ -9,7 +9,9 @@
 
 var isPushEnabled = false;
 
- function subscribe() {  
+var subscriptionObj = undefined;
+
+ function subscribe() {
   // Disable the button so it can't be changed while  
   // we process the permission request  
   var pushButton = document.querySelector('.js-push-button');  
@@ -22,6 +24,16 @@ var isPushEnabled = false;
         isPushEnabled = true;  
         pushButton.textContent = 'Disable Push Messages';  
         pushButton.disabled = false;
+        
+        subscriptionObj = subscription;
+        
+        // Update status to subscribe current user on server, and to let
+        // other users know this user has subscribed
+        var endpoint = subscription.endpoint;
+        //var key = subscription.getKey('p256dh');
+        //updateStatus(endpoint,key,'subscribe');
+        
+        //sendWebPush(subscription);
 
         // TODO: Send the subscription.endpoint to your server  
         // and save it to send a push message at a later date
@@ -47,6 +59,33 @@ var isPushEnabled = false;
   });  
 }
 
+var PUSH_SERVER_URL = '';
+
+function sendWebPush(subscription){
+    
+    if(!subscription){
+        subscription = subscriptionObj;
+    }
+    
+    var headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+
+      fetch(PUSH_SERVER_URL + '/send_web_push', {
+        method: 'post',
+        headers: headers,
+        body: JSON.stringify(subscription)
+      }).then(function(response) {
+        return response.json();
+      })
+      .then((responseObj) => {
+        if (!responseObj.success) {
+          throw new Error('Unsuccessful attempt to send push message');
+        }
+      })
+      .catch(function(err) {
+        console.log('Fetch Error :-S', err);
+      });
+}
 
 function unsubscribe() {  
   var pushButton = document.querySelector('.js-push-button');  
@@ -131,6 +170,16 @@ function initialiseState() {
           // to allow the user to enable push  
           return;  
         }
+        
+        
+        // initialize status, which includes setting UI elements for subscribed status
+        // and updating Subscribers list via push
+        console.log(subscription.toJSON());
+        var endpoint = subscription.endpoint;
+        //var key = subscription.getKey('p256dh');
+        //console.log(key);
+        //updateStatus(endpoint,key,'init')
+        
 
         // Keep your server in sync with the latest subscriptionId
         //sendSubscriptionToServer(subscription);
@@ -147,9 +196,7 @@ function initialiseState() {
 }
 
 
-window.addEventListener('load', function() {
-  
- 
+window.addEventListener('load', function() { 
     
   var pushButton = document.querySelector('.js-push-button');  
   pushButton.addEventListener('click', function() {  
@@ -171,9 +218,6 @@ window.addEventListener('load', function() {
   } else {  
     console.warn('Service workers aren\'t supported in this browser.');  
   }
-
-
-
   
 });
 

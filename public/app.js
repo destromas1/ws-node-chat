@@ -18,6 +18,7 @@ jQuery(document).ready(function ($) {
 		var message = $('#input').val();
 		console.log(message);
 		ws.send(message);
+        sendWebPush();
 	});
 
 
