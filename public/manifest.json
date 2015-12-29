@@ -1,0 +1,10 @@
+{  
+  "name": "chat-push",  
+  "short_name": "chat-push",  
+  "icons": [{  
+        "src": "favicon.ico"
+      }],  
+  "start_url": "index.html?homescreen=1",  
+  "display": "standalone",  
+  "gcm_sender_id": "111878736537"
+}
