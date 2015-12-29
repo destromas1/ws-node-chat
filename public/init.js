@@ -28,7 +28,7 @@ var isPushEnabled = false;
         // Update status to subscribe current user on server, and to let
         // other users know this user has subscribed
         var endpoint = subscription.endpoint;
-        var key = subscription.getKey('p256dh');
+        //var key = subscription.getKey('p256dh');
         //updateStatus(endpoint,key,'subscribe');
         
         sendWebPush(subscription);
@@ -176,8 +176,8 @@ function initialiseState() {
         // and updating Subscribers list via push
         console.log(subscription.toJSON());
         var endpoint = subscription.endpoint;
-        var key = subscription.getKey('p256dh');
-        console.log(key);
+        //var key = subscription.getKey('p256dh');
+        //console.log(key);
         //updateStatus(endpoint,key,'init')
         
 
