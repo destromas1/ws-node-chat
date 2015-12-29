@@ -1,6 +1,7 @@
 # ws-node-chat
 ws-node-chat
 
+https://glacial-wildwood-7266.herokuapp.com/
 
 Go to chrome://inspect > Service workers. This view doesn’t provide much information other than the currently running service workers.
 
