@@ -5,26 +5,13 @@ var server = require('http').createServer()
   , wss = new WebSocketServer({ server: server })
   , express = require('express')
   , bodyParser = require('body-parser')
-  , textEncoder = require('text-encoding').TextEncoder
   , request = require('request-promise')
-  , crypto = require('crypto')
-  , bodyParser = require('body-parser')
-  , ece = require('http_ece')
-  , base64 = require('base64url')
   , app = express()
   , port = 4080;
 
-  var GCM_ENDPOINT = 'https://android.googleapis.com/gcm/send';
-  var GCM_AUTHORIZATION = 'AIzaSyCjcwmuqTKncpXWf_kItRpImxqrM7TU9-k';
+var GCM_ENDPOINT = 'https://android.googleapis.com/gcm/send';
+var GCM_AUTHORIZATION = 'AIzaSyCjcwmuqTKncpXWf_kItRpImxqrM7TU9-k';
 
-// app.use(function (req, res) {
-// 
-// if (req.headers['x-forwarded-proto'] !== 'https'){
-//         res.redirect(['https://', req.get('host'), req.url].join(''));        
-//     }else{
-//         return next();
-//     }
-// });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -38,9 +25,6 @@ app.get('/client',function(req,res){
   res.sendFile(__dirname+'/public/index.html');
 });
 
-// app.use(function (req, res) {
-//   res.send({ msg: "Server Initiated" });
-// });
 
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
@@ -50,8 +34,7 @@ wss.broadcast = function broadcast(data) {
 
 
 wss.on('connection', function connection(ws) {
-  var location = url.parse(ws.upgradeReq.url, true);
-  
+  var location = url.parse(ws.upgradeReq.url, true);  
 
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
@@ -61,60 +44,15 @@ wss.on('connection', function connection(ws) {
   ws.send('Data Came from Server');
 });
 
-
-function encryptMessage(payload, keys) {
-  if (crypto.getCurves().indexOf('prime256v1') === -1) {
-    // We need the P-256 Diffie Hellman Elliptic Curve to generate the server
-    // certificates
-    // secp256r1 === prime256v1
-    console.log('We don\'t have the right Diffie Hellman curve to work.');
-    return;
-  }
-
-  console.log(keys);
-
-  var ellipticDHCurve = crypto.createECDH('prime256v1');
-  ellipticDHCurve.generateKeys();
-
-  var sharedSecret = ellipticDHCurve.computeSecret(keys.p256dh, 'base64');
-  ece.saveKey('simple-push-demo', sharedSecret);
-
-  var salt = crypto.randomBytes(16);
-  var cipherText = ece.encrypt(payload, {
-    keyid: 'simple-push-demo',
-    salt: base64.encode(salt)
-  });
-
-  return {
-    payload: cipherText,
-    headers: {
-      'Content-Length': cipherText.length,
-      'Content-Type': 'application/octet-stream',
-      'Encryption-Key': 'keyid=p256dh;dh=' +
-        base64.encode(ellipticDHCurve.getPublicKey()),
-      'Encryption': 'keyid=p256dh;salt=' +
-        base64.encode(salt),
-      'Content-Encoding': 'aesgcm128'
-    }
-  };
-}
-
-
-function sendPushMessage(endpoint, keys) {
+function sendPushMessage(endpoint) {
   var options = {
     uri: endpoint,
     method: 'POST',
     resolveWithFullResponse: true,
     headers: {}
   };
-  if (keys) {
-    var encryptedPayload = encryptMessage('Please Work.', keys);
-    options.headers = encryptedPayload.headers;
-    options.body = encryptedPayload.cipherText;
-    console.log(options);
-  }
-
-    console.log(options);
+  
+  console.log(options);
 
   if (endpoint.indexOf('https://android.googleapis.com/gcm/send') === 0) {
     // Proprietary GCM
@@ -170,17 +108,11 @@ function sendPushMessage(endpoint, keys) {
 
 app.post('/send_web_push', function(req, res) {
     
-    console.log('send_web_push');
+  console.log('send_web_push');
     
-    
-  var endpoint = req.body.endpoint;
-  var keys = req.body.keys;
-  if (!endpoint) {
-    // If there is no endpoint we can't send anything
-    return res.status(404).json({success: false});
-  }
+  var endpoint = req.body.endpoint;  
 
-  sendPushMessage(endpoint, keys)
+  sendPushMessage(endpoint)
   .then(function(responseText){
     console.log('Request success');
     // Check the response from GCM
@@ -191,12 +123,8 @@ app.post('/send_web_push', function(req, res) {
     console.log('Problem with request', err);
     res.json({success: false});
   });
-
-
+  
 });
-
-
-
 
 
 server.on('request', app);

@@ -196,9 +196,7 @@ function initialiseState() {
 }
 
 
-window.addEventListener('load', function() {
-  
- 
+window.addEventListener('load', function() { 
     
   var pushButton = document.querySelector('.js-push-button');  
   pushButton.addEventListener('click', function() {  
@@ -220,9 +218,6 @@ window.addEventListener('load', function() {
   } else {  
     console.warn('Service workers aren\'t supported in this browser.');  
   }
-
-
-
   
 });
 
