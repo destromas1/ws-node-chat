@@ -9,6 +9,8 @@
 
 var isPushEnabled = false;
 
+var subscriptionObj = undefined;
+
  function subscribe() {
   // Disable the button so it can't be changed while  
   // we process the permission request  
@@ -23,7 +25,7 @@ var isPushEnabled = false;
         pushButton.textContent = 'Disable Push Messages';  
         pushButton.disabled = false;
         
-        
+        subscriptionObj = subscription;
         
         // Update status to subscribe current user on server, and to let
         // other users know this user has subscribed
@@ -31,7 +33,7 @@ var isPushEnabled = false;
         //var key = subscription.getKey('p256dh');
         //updateStatus(endpoint,key,'subscribe');
         
-        sendWebPush(subscription);
+        //sendWebPush(subscription);
 
         // TODO: Send the subscription.endpoint to your server  
         // and save it to send a push message at a later date
@@ -60,6 +62,11 @@ var isPushEnabled = false;
 var PUSH_SERVER_URL = '';
 
 function sendWebPush(subscription){
+    
+    if(!subscription){
+        subscription = subscriptionObj;
+    }
+    
     var headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
@@ -79,13 +86,6 @@ function sendWebPush(subscription){
         console.log('Fetch Error :-S', err);
       });
 }
-
-
-
-
-
-
-
 
 function unsubscribe() {  
   var pushButton = document.querySelector('.js-push-button');  
