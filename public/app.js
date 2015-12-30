@@ -15,11 +15,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		console.log('Connected');
 	};
     
-    
-    // document.getElementById("btnChat").onclick = function() {
-    //     onButtonClicked();
-    // };
-    
     document.getElementById("input").addEventListener("keydown", function(e) {
         if (e.keyCode == 13) { 
             onButtonClicked();
