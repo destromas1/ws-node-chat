@@ -1,5 +1,6 @@
-jQuery(document).ready(function ($) {
-	var content = $('#content');
+document.addEventListener("DOMContentLoaded", function(event) {
+   
+    var content = document.getElementById('content');
     
     var WS_SERVER = 'ws://localhost:4080';
     
@@ -13,21 +14,31 @@ jQuery(document).ready(function ($) {
 	ws.onopen = function () {
 		console.log('Connected');
 	};
-
-	$('#btnChat').click(function () {               
-		var message = $('#input').val();
+    
+    document.getElementById("input").addEventListener("keydown", function(e) {
+        if (e.keyCode == 13) { 
+            onButtonClicked();
+        }
+    }, false);
+    
+    function onButtonClicked(){
+        var message = document.getElementById('input').value;
 		console.log(message);
 		ws.send(message);
         sendWebPush();
-	});
-
-
+    }
+    
 	ws.onmessage = function (msg) {
 		console.log('Received message from server: ' + msg.data);
 		addMessage(msg.data);
 	}
 
 	function addMessage(message) {
-		content.prepend('<p><span>' + message + '</span></p>');
+       var inner = document.createElement("p");
+       inner.innerHTML = message;
+       content.appendChild(inner);
+       content.insertBefore(inner, content.firstChild);
 	}
+
 });
+

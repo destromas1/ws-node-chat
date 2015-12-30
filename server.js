@@ -65,7 +65,6 @@ function sendPushMessage(endpoint) {
     options.headers['Content-Type'] = 'application/json';
     options.headers.Authorization = 'key=' + GCM_AUTHORIZATION;
 
-    // You can use a body of:
     // registration_ids: [<gcmRegistrationId>, <gcmRegistrationId>...]
     // for multiple registrations.
     options.body = JSON.stringify({
@@ -97,7 +96,7 @@ function sendPushMessage(endpoint) {
 
         }
       } catch (exception) {
-        // NOOP
+        
       }
     }
 
@@ -114,8 +113,7 @@ app.post('/send_web_push', function(req, res) {
 
   sendPushMessage(endpoint)
   .then(function(responseText){
-    console.log('Request success');
-    // Check the response from GCM
+    console.log('Request success');    
 
     res.json({success: true});
   })
@@ -129,3 +127,4 @@ app.post('/send_web_push', function(req, res) {
 
 server.on('request', app);
 server.listen(app.get('port'), function () { console.log('Listening on ' + server.address().port) });
+
